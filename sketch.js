@@ -19,7 +19,7 @@ function gotHands(results) {
 }
 
 function setup() {
-  createCanvas(640, 480);
+  createCanvas(640, 480); //產一個畫布，640*480
   video = createCapture(VIDEO, { flipped: true });
   video.hide();
 
@@ -34,7 +34,7 @@ function draw() {
   if (hands.length > 0) {
     for (let hand of hands) {
       if (hand.confidence > 0.1) {
-        // Loop through keypoints and draw circles
+        // Draw keypoints
         for (let i = 0; i < hand.keypoints.length; i++) {
           let keypoint = hand.keypoints[i];
 
@@ -46,7 +46,26 @@ function draw() {
           }
 
           noStroke();
-          circle(keypoint.x, keypoint.y, 16);
+          // circle(keypoint.x, keypoint.y, 16);
+        }
+
+        // Draw lines connecting keypoints in specified ranges
+        let ranges = [
+          [0, 4],
+          [5, 8],
+          [9, 12],
+          [13, 16],
+          [17, 20],
+        ];
+
+        for (let [start, end] of ranges) {
+          for (let i = start; i < end; i++) {
+            let kp1 = hand.keypoints[i];
+            let kp2 = hand.keypoints[i + 1];
+            stroke(0, 255, 0); // Green lines
+            strokeWeight(10);
+            line(kp1.x, kp1.y, kp2.x, kp2.y);
+          }
         }
       }
     }
