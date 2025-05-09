@@ -8,6 +8,7 @@ let circleX, circleY; // 圓的座標
 const circleSize = 100; // 圓的大小
 let isDragging = false; // 是否正在拖動圓
 let trails = []; // 所有軌跡資料
+let circleColor = [255, 0, 0, 150]; // 圓的顏色，預設為紅色
 
 function preload() {
   // Initialize HandPose model with flipped video input
@@ -39,7 +40,7 @@ function draw() {
   image(video, 0, 0);
 
   // 畫出圓
-  fill(255, 0, 0, 150); // 半透明紅色
+  fill(circleColor); // 使用動態顏色
   noStroke();
   circle(circleX, circleY, circleSize);
 
@@ -74,6 +75,9 @@ function draw() {
           // 更新圓的位置為兩點的中點
           circleX = (indexFinger.x + thumb.x) / 2;
           circleY = (indexFinger.y + thumb.y) / 2;
+
+          // 更新圓的顏色
+          circleColor = trailColor === "green" ? [0, 255, 0, 150] : [255, 0, 0, 150];
 
           // 如果正在拖動，將當前軌跡點加入 trails
           if (trails.length === 0 || !isDragging) {
